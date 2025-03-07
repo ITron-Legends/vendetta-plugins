@@ -7,7 +7,8 @@
       "id": "601836455006044163"
     }
   ],
-  "main": "./src/index.js",
+  "main": "https://itron-legends.github.io/vendetta-plugins/plugins/urban/src/index.js"
+,
   "vendetta": {
     "icon": "ic_badge_staff"
   }
