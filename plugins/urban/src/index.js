@@ -6,8 +6,8 @@ let urbcmd;
 export default {
   onLoad: () => {
     urbcmd = registerCommand({
-      name: "urban",
-      displayName: "urban",
+      name: "urbantron",
+      displayName: "urbantron",
       description: "Search urban dictionary",
       displayDescription: "Search urban dictionary",
       options: [
