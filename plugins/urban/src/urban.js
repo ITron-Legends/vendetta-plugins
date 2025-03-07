@@ -1,13 +1,8 @@
 import { findByProps } from "@vendetta/metro";
 const { sendBotMessage } = findByProps("sendBotMessage");
-const FORUM_POST_URL =
-  "https://discord.com/channels/1015931589865246730/1092643779523121262";
 
 function unBracket(text) {
-  return text.replace(/\[(.*?)\]/g, (match, word) => {
-    word = word.trim();
-    return word;
-  });
+  return text.replace(/\[(.*?)\]/g, (match, word) => word.trim());
 }
 
 function replaceHighlighted(text) {
@@ -37,15 +32,16 @@ export default async function urbanDef(args, ctx) {
       definition = defObj?.definition;
 
     if (!definition) {
-      return sendBotMessage(
-        ctx.channel.id,
-        `No definition found for \`${word.replaceAll("`", "`󠄴")}\`${
+      return sendBotMessage(ctx.channel.id, {
+        content: `No definition found for \`${word.replaceAll("`", "`󠄴")}\`${
           response.status !== 200 ? ` (${response.status})` : ""
-        }`
-      );
+        }`,
+        ephemeral: true,
+      });
     }
 
-    const permalink = defObj.permalink;
+    // Construct the proper Urban Dictionary permalink manually
+    const permalink = `https://www.urbandictionary.com/define.php?term=${encodeURIComponent(defObj.word)}`;
     let output = `__Definition for **\`${defObj.word}\`**__`;
 
     if (!inline_links) {
@@ -62,14 +58,10 @@ export default async function urbanDef(args, ctx) {
       sendBotMessage(ctx.channel.id, output);
     }
   } catch (error) {
-    alert(error.stack);
     console.error(error);
-    sendBotMessage(
-      ctx.channel.id,
-      `\`\`\`js\n${error.stack}\`\`\`` +
-        "An error has occurred while processing the </urban:0> command\n" +
-        `Send the error in ${FORUM_POST_URL}.`
-    );
+    sendBotMessage(ctx.channel.id, {
+      content: `An error has occurred while processing the </urban:0> command:\n\`\`\`js\n${error.stack}\`\`\``,
+      ephemeral: true,
+    });
   }
-  3;
 }
